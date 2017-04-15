@@ -1,38 +1,76 @@
 export default class ModuleCollection {
 
-  constructor(registry, args, argumentFlags) {
+  constructor(registry, args) {
     this.instances = {};
     this.args = args;
     this.registry = registry;
-    this.argumentFlags = argumentFlags;
   }
 
-  getCachedInstance(key, instances) {
-    const instance = instances[key];
-    if(instance) {
-      console.log(`Loaded cached instance of`, key.toString());
+  getCachedInstance(key, scope, instances) {
+    const instancesByContext = instances[key];
+    if(instancesByContext) {
+      const instance = instancesByContext.find(instance => this.canUseScope(instance.__creationScope, scope));
+      if(instance) {
+        console.log(`Loaded cached instance of`, key.toString());
+        return instance;
+      }
+    }
+  }
+
+  getNewInstance(key, scope) {
+    const Module = this.registry.get(key);
+    if(Module) {
+      const instance = new Module(this.args.get(scope));
+      Object.defineProperty(instance, '__creationScope', { get: () => scope});
+
+      console.log(`Created new instance of`,  key.toString());
       return instance;
     }
   }
 
-  getNewInstance(key) {
-    const Module = this.registry.get(key);
-    if(Module) {
-      console.log(`Created new instance of`,  key.toString());
-      return new Module(this.args.get());
-    }
+  canUseScope(instance, reference) {
+    const instanceContexts = this.getChildContexts(instance);
+    const referenceContexts = this.getChildContexts(reference, reference.availableContexts);
+    const hasSameContexts = instanceContexts.every(context => referenceContexts.indexOf(context) !== -1);
+    return hasSameContexts;
   }
 
-  getInstance(key) {
-    const instance
-         = this.getCachedInstance(key, this.instances)
-        || this.getNewInstance(key);
+  getChildContexts(scope, context=scope.usedContexts) {
+    const contexts = [].concat(context, ...scope.childScopes.map(scope=>this.getChildContexts(scope)));
+    contexts.forEach(context=> {
+      const instancesBag = context.values;
+      if (instancesBag) {
+        const instanceKeys = Reflect.ownKeys(instancesBag);
+        instanceKeys
+          .map(key=>instancesBag[key])
+          .filter(instance=>instance.__creationScope)
+          .forEach(instance => {
+            instance.__creationScope.usedContexts.forEach(context => {
+              if (contexts.indexOf(context) === -1) {
+                contexts.push(context);
+              }
+            }
+          );
+        })
+      }
+    });
+    return contexts;
+  }
 
-    const useCache = !this.argumentFlags.usingCustomArguents;
-    this.argumentFlags.usingCustomArguents = false;
-    
-    if(useCache && instance) {
-      this.instances[key] = instance;
+  getInstance(key, contexts) {
+    const scope = {childScopes: [], availableContexts:contexts, usedContexts: []};
+    const instance
+         = this.getCachedInstance(key, scope, this.instances)
+        || this.getNewInstance(key, scope);
+
+    if(instance) {
+      this.instances[key] = this.instances[key] || [];
+      if(this.instances[key].indexOf(instance) === -1) {
+        console.log(`Add to cache`, key.toString());
+        this.instances[key].push(instance);
+      }
+    } else {
+      console.log(`Not caching`, key.toString());
     }
 
     return instance;

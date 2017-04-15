@@ -1,24 +1,23 @@
 export default class ProxyArguments {
-  constructor(getInstance, argumentFlags) {
-    this.defaultContext = getInstance;
-    this.contexts = [];
-    this.argumentFlags = argumentFlags;
-    this.addContext(this.defaultContext);
-  }
+  constructor() { }
 
-  get() {
+  get(scope) {
     return new Proxy({}, {
-      get: (_, key)=> this.getInstance(key)
+      get: (_, key)=> this.getInstance(key, scope)
     });
   }
 
-  getInstance(key) {
-    for(let i = this.contexts.length - 1; i >= 0; i--) {
-      const context = this.contexts[i];
-      const instance = context(key);
+  getInstance(key, scope) {
+    for(let i = scope.availableContexts.length - 1; i >= 0; i--) {
+      const context = scope.availableContexts[i];
+      const instance = context.get(key, scope.availableContexts);
       if(instance) {
-        if(context !== this.defaultContext) {
-          this.argumentFlags.usingCustomArguents = true;
+        const childScope = instance.__creationScope;
+        if(childScope) {
+          scope.childScopes.push(childScope);
+        }
+        if(scope.usedContexts.indexOf(context) === -1) {
+          scope.usedContexts.push(context);
         }
         return instance
       }
@@ -27,14 +26,4 @@ export default class ProxyArguments {
     throw new Error(`Not found`);
   }
 
-  addContext(context) {
-    this.contexts.push(context);
-  }
-
-  removeContext(context) {
-    const index = this.contexts.indexOf(context);
-    if(index !== -1) {
-      this.contexts.splice(index);
-    }
-  }
 }

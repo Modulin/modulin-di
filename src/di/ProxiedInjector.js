@@ -1,32 +1,30 @@
 import Registry from "./Registry";
 import ModuleCollection from "./ModuleCollection";
 import ProxyArguments from "./ProxyArguments";
-
-const argumentFlags = {};
+import Context from "./Context";
 
 const registry = new Registry();
-const args = new ProxyArguments(getInstance, argumentFlags);
-const modules = new ModuleCollection(registry, args, argumentFlags);
+const args = new ProxyArguments();
+const modules = new ModuleCollection(registry, args);
+const defaultContext = {get: getInstance};
 
-function getInstance(key) {
-  return modules.getInstance(key);
+function getInstance(key, contexts) {
+  return modules.getInstance(key, contexts);
 }
 
 export function register(module, key) {
   return registry.register(module, key);
 }
 
-export function load(key, customModules) {
-  let context;
-  if(customModules) {
-    context = (key)=>customModules[key];
-  } else {
-    context = ()=>{};
+export function load(key, customContext) {
+  const contexts = [defaultContext];
+  if(customContext) {
+    if(!customContext.get) {
+      customContext = new Context(customContext);
+    }
+    contexts.push(customContext);
   }
 
-  args.addContext(context);
-  const instance = getInstance(key);
-  args.removeContext(context);
-
+  const instance = getInstance(key, contexts);
   return instance;
 }

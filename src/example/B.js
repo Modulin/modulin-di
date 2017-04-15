@@ -1,9 +1,11 @@
 import {register} from "Injector";
-import C from "example/C";
+import C from "./C";
+import E from "./E";
 
 class B {
-  constructor({[C]: c}) {
+  constructor({[C]: c, [E]: e}) {
     this.c = c;
+    this.e = e;
   }
 }
 
