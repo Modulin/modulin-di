@@ -12,3 +12,5 @@ const context = new Context({[D]: d});
 const a1 = load(A, context);
 const a2 = load(A, context);
 const a3 = load(A, {[D]: 'test'});
+
+console.log(a1, a2, a3);

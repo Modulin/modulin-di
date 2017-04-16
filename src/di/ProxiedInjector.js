@@ -1,30 +1,26 @@
 import Registry from "./Registry";
-import ModuleCollection from "./ModuleCollection";
+import ModuleConstructor from "./ModuleConstructor";
 import ProxyArguments from "./ProxyArguments";
 import Context from "./Context";
+import ModuleCache from "./ModuleCache";
 
 const registry = new Registry();
 const args = new ProxyArguments();
-const modules = new ModuleCollection(registry, args);
-const defaultContext = {get: getInstance};
-
-function getInstance(key, contexts) {
-  return modules.getInstance(key, contexts);
-}
+const cache = new ModuleCache();
+const construct = new ModuleConstructor({registry, args, cache});
 
 export function register(module, key) {
   return registry.register(module, key);
 }
 
-export function load(key, customContext) {
-  const contexts = [defaultContext];
-  if(customContext) {
-    if(!customContext.get) {
-      customContext = new Context(customContext);
+export function load(key, ...customContexts) {
+  const contexts = [construct, cache];
+  customContexts.forEach(context=> {
+    if(!context.get) {
+      context = new Context(context);
     }
-    contexts.push(customContext);
-  }
+    contexts.push(context);
+  });
 
-  const instance = getInstance(key, contexts);
-  return instance;
+  return cache.get(key, contexts) || construct.get(key, contexts);
 }
