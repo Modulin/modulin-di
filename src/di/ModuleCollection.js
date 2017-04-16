@@ -1,3 +1,4 @@
+import {debug} from "./Log";
 export default class ModuleCollection {
 
   constructor(registry, args) {
@@ -11,7 +12,7 @@ export default class ModuleCollection {
     if(instancesByContext) {
       const instance = instancesByContext.find(instance => this.canUseScope(instance.__creationScope, scope));
       if(instance) {
-        console.log(`Loaded cached instance of`, key.toString());
+        debug(`Loaded cached instance of`, key.toString());
         return instance;
       }
     }
@@ -23,7 +24,7 @@ export default class ModuleCollection {
       const instance = new Module(this.args.get(scope));
       Object.defineProperty(instance, '__creationScope', { get: () => scope});
 
-      console.log(`Created new instance of`,  key.toString());
+      debug(`Created new instance of`,  key.toString());
       return instance;
     }
   }
@@ -66,11 +67,11 @@ export default class ModuleCollection {
     if(instance) {
       this.instances[key] = this.instances[key] || [];
       if(this.instances[key].indexOf(instance) === -1) {
-        console.log(`Add to cache`, key.toString());
+        debug(`Add to cache`, key.toString());
         this.instances[key].push(instance);
       }
     } else {
-      console.log(`Not caching`, key.toString());
+      debug(`Not caching`, key.toString());
     }
 
     return instance;

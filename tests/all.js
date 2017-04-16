@@ -1,0 +1,2 @@
+import "./RegistryTest";
+import "./EventSourceTest";
