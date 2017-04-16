@@ -8,8 +8,8 @@ export default class ModuleConstructor {
     this.cache = cache;
   }
 
-  get(key, contexts) {
-    const scope = {childScopes: [], availableContexts:contexts, usedContexts: []};
+  get(key, availableContexts) {
+    const scope = {childScopes: [], availableContexts, usedContexts: []};
 
     const Module = this.registry.get(key);
     if(Module) {

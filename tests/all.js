@@ -1,2 +1,3 @@
-import "./RegistryTest";
-import "./EventSourceTest";
+import "./di/RegistryTest";
+import "./di/EventSourceTest";
+import "./di/ModuleConstructorTest";
