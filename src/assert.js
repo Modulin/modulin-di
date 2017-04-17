@@ -83,14 +83,15 @@ export function test(name, closure) {
       promise.catch(failed);
     }
   } catch (ex) {
-    failed();
+    failed(ex);
   }
 
   function passed() {
     currentSuite.passed.push({name, closure});
   }
 
-  function failed() {
+  function failed(message) {
+    console.error(message);
     currentSuite.failed.push({name, closure});
   }
 }

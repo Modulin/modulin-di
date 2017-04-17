@@ -4,3 +4,4 @@ import "./di/ModuleConstructorTest";
 import "./di/CompositeContextTest";
 import "./di/ContextTest";
 import "./di/ContextListTest";
+import "./ProxiedInjectorTest";
