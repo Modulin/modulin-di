@@ -14,26 +14,34 @@ export default class ModuleCache {
     }
   }
 
+  has(key, availableContexts) {
+    return !!this.__get(key, availableContexts);
+  }
+
   get(key, availableContexts) {
-    const instances = this.values;
-    const instancesByContext = instances[key];
-    if(instancesByContext) {
-      const checkValidScope = ({__creationScope: scope}) => this.canUseScope(scope, availableContexts);
-      const instance = instancesByContext.find(checkValidScope);
-      if(instance) {
-        debug(`Loaded cached instance of`, key.toString());
-        return instance;
-      }
+    const instance = this.__get(key, availableContexts);
+    if(instance) {
+      debug(`Loaded cached instance of`, key.toString());
+      return instance;
     }
   }
 
-  canUseScope(scope, availableContexts) {
-    const instanceContexts = this.getScopeContexts(scope);
-    const hasSameContexts = instanceContexts.every(context => availableContexts.indexOf(context) !== -1);
+  __get(key, availableContexts) {
+    const instances = this.values;
+    const instancesByContext = instances[key];
+    if(instancesByContext) {
+      return instancesByContext.find(({__creationScope: {usedContexts}}) => {
+        return this.canUseScope(usedContexts, availableContexts);
+      });
+    }
+  }
+
+  canUseScope(usedContexts, availableContexts) {
+    const hasSameContexts = usedContexts.every(({context, key}) => {
+      const derivedContext = availableContexts.getContext(key);
+      return context === derivedContext;
+    });
     return hasSameContexts;
   }
 
-  getScopeContexts(scope, context=scope.usedContexts) {
-    return [].concat(context, ...scope.childScopes.map(scope=>this.getScopeContexts(scope)));
-  }
 }

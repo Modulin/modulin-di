@@ -9,23 +9,18 @@ export default class ProxyArguments {
 }
 
 function getInstance(key, scope) {
-  for(let i = scope.availableContexts.length - 1; i >= 0; i--) {
-    const context = scope.availableContexts[i];
-    const instance = context.get(key, scope.availableContexts);
-    if(instance) {
-      const childScope = instance.__creationScope;
-      if(childScope) {
-        const isSameContext = childScope.availableContexts === scope.availableContexts;
-        if(isSameContext) {
-          scope.childScopes.push(childScope);
-        }
-      }
-      if(scope.usedContexts.indexOf(context) === -1) {
-        scope.usedContexts.push(context);
-      }
-      return instance
-    }
+  const {context, instance} = scope.availableContexts.getModule(key);
+  if(!instance) {
+    throw new Error(`Not found`);
   }
 
-  throw new Error(`Not found`);
+  const childScope = instance.__creationScope;
+  if(childScope) {
+    const isSameContext = childScope.availableContexts === scope.availableContexts;
+    if(isSameContext) {
+      scope.usedContexts.push(...childScope.usedContexts);
+    }
+  }
+  scope.usedContexts.push({context, key});
+  return instance
 }

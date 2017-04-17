@@ -1,16 +1,20 @@
 import Registry from "./Registry";
-import ModuleConstructor from "./ModuleConstructor";
 import ProxyArguments from "./ProxyArguments";
-import Context from "./Context";
 import ModuleCache from "./ModuleCache";
+import ModuleConstructor from "./ModuleConstructor";
+
+import CompositeContext from "./CompositeContext";
+import Context from "./Context";
+import ContextList from "./ContextList";
 
 const registry = new Registry();
 const args = new ProxyArguments();
 const cache = new ModuleCache();
 const construct = new ModuleConstructor({registry, args, cache});
+const defaultContext = new CompositeContext([cache, construct]);
 
-function getLoadContext(contexts) {
-  const defaultContexts = [construct, cache];
+function getAvailableContexts(contexts) {
+  const loadContexts = new ContextList();
   const customContexts = contexts.map(context=> {
     if(!context.get) {
       context = new Context(context);
@@ -18,7 +22,8 @@ function getLoadContext(contexts) {
     return context;
   });
 
-  const loadContexts = [].concat(defaultContexts, customContexts);
+  loadContexts.add(defaultContext);
+  loadContexts.add(...customContexts);
   return loadContexts;
 }
 
@@ -27,6 +32,6 @@ export function register(module, key) {
 }
 
 export function load(key, ...contexts) {
-  const loadContexts = getLoadContext(contexts);
-  return cache.get(key, loadContexts) || construct.get(key, loadContexts);
+  const availableContexts = getAvailableContexts(contexts);
+  return cache.get(key, availableContexts) || construct.get(key, availableContexts);
 }
