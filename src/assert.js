@@ -36,6 +36,18 @@ export function isFalse(valid, message) {
   }
 }
 
+export function isUndefined(valid, message) {
+  if (valid !== void 0) {
+    throw new Error(message);
+  }
+}
+
+export function isNotUndefined(valid, message) {
+  if (valid === void 0) {
+    throw new Error(message);
+  }
+}
+
 export function isNull(valid, message) {
   if (valid !== null) {
     throw new Error(message);

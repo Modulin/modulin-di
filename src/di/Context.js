@@ -1,5 +1,5 @@
 export default class Context {
-  constructor(values) {
+  constructor(values={}) {
     this.values = values;
   }
 

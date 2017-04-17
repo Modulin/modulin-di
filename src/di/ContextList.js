@@ -1,11 +1,11 @@
 export default class ContextList {
 
-  constructor() {
-    this.contexts = [];
+  constructor(contexts=[]) {
+    this.contexts = contexts;
   }
 
   add(...contexts) {
-    this.contexts.unshift(...contexts.reverse());
+    this.contexts.push(...contexts);
   }
 
   getContext(key) {

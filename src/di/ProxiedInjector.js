@@ -21,9 +21,9 @@ function getAvailableContexts(contexts) {
     }
     return context;
   });
+  customContexts.reverse();
 
-  loadContexts.add(defaultContext);
-  loadContexts.add(...customContexts);
+  loadContexts.add(...customContexts, defaultContext);
   return loadContexts;
 }
 

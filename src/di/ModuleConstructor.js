@@ -13,7 +13,9 @@ export default class ModuleConstructor {
   }
 
   get(key, availableContexts) {
-    const scope = {availableContexts, usedContexts: []};
+    const id = {};
+    const usedContexts = [];
+    const scope = {id, availableContexts, usedContexts};
 
     const Module = this.registry.get(key);
     if(Module) {
