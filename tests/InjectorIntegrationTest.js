@@ -1,11 +1,12 @@
 import {suite, test, equal, notEqual} from "assert";
-import {register, load} from "di/ProxiedInjector";
+import {load} from "Injector";
 import Context from "di/Context";
+
 import A from "example/A";
 import D from "example/D";
 import E from "example/E";
 
-suite('ProxiedInjector' ,()=> {
+suite('Injector integration' ,()=> {
 
   test('base context', ()=>{
     const a1 = load(E);
