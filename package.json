@@ -1,0 +1,15 @@
+{
+  "name": "modulin-di",
+  "version": "1.0.0",
+  "description": "A light weight dependency injector",
+  "main": "main.html",
+  "repository": "https://github.com/RikardLegge/modulin-di.git",
+  "author": "Rikard Legge <rikard@legge.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^1.2.2"
+  },
+  "scripts": {
+    "format": "prettier --write '@(src|tests)/**/*.js'"
+  }
+}
