@@ -2,8 +2,7 @@ import Context from "./Context";
 import ContextList from "./ContextList";
 
 export default class Injector {
-
-  constructor({registry, cache, construct, defaultContext}) {
+  constructor({ registry, cache, construct, defaultContext }) {
     this.registry = registry;
     this.cache = cache;
     this.construct = construct;
@@ -27,7 +26,10 @@ export default class Injector {
 
   load(key, ...contexts) {
     const availableContexts = this.getAvailableContexts(contexts);
-    return this.cache.get(key, availableContexts) || this.construct.get(key, availableContexts);
+    return (
+      this.cache.get(key, availableContexts) ||
+      this.construct.get(key, availableContexts)
+    );
   }
 }
 
@@ -36,7 +38,7 @@ function notNull(it) {
 }
 
 function createContext(context) {
-  if(context.isContext) {
+  if (context.isContext) {
     return context;
   } else {
     return new Context(context);

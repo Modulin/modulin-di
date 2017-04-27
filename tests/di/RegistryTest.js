@@ -1,8 +1,8 @@
-import {suite, test, equal, notEqual} from "assert";
+import { suite, test, equal, notEqual } from "assert";
 import Registry from "di/Registry";
 
-suite('Registry' ,()=> {
-  test('register module', () => {
+suite("Registry", () => {
+  test("register module", () => {
     const registry = new Registry();
     class TestClass {}
     const key = registry.register(TestClass);
@@ -11,29 +11,29 @@ suite('Registry' ,()=> {
     equal(TestClass, result);
   });
 
-  test('register module custom key', () => {
+  test("register module custom key", () => {
     const registry = new Registry();
     class TestClass {}
-    const key = 'key';
+    const key = "key";
     const resultKey = registry.register(TestClass, key);
     const result = registry.get(key);
     equal(key, resultKey);
     equal(TestClass, result);
   });
 
-  test('register module triggered event', () => {
+  test("register module triggered event", () => {
     const registry = new Registry();
     class TestClass {}
 
     let calledCount = 0;
-    registry.registered.on(()=>calledCount++);
+    registry.registered.on(() => calledCount++);
     registry.register(TestClass);
     registry.register(TestClass);
 
-    equal(2,calledCount);
+    equal(2, calledCount);
   });
 
-  test('register module missing key', () => {
+  test("register module missing key", () => {
     const registry = new Registry();
     class TestClass {}
     registry.register(TestClass);
@@ -42,7 +42,7 @@ suite('Registry' ,()=> {
     equal(undefined, result);
   });
 
-  test('register multiple module', () => {
+  test("register multiple module", () => {
     const registry = new Registry();
 
     class TestClass1 {}

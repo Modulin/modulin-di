@@ -1,7 +1,7 @@
-import {register} from "Injector";
+import { register } from "Injector";
 
 class D {
-  constructor({name}) {
+  constructor({ name }) {
     this.name = name;
   }
 }

@@ -6,7 +6,7 @@ export default class Registry {
     this.modules = {};
   }
 
-  register(Module, key=Symbol(Module.name)){
+  register(Module, key = Symbol(Module.name)) {
     this.modules[key] = Module;
     this.registered.dispatch(key);
     return key;

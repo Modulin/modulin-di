@@ -1,11 +1,11 @@
-import {suite, test, equal, arrayEqual} from "assert";
+import { suite, test, equal, arrayEqual } from "assert";
 import EventSource from "di/EventSource";
 
-suite('EventSource' ,()=> {
-  test('one event listener', () => {
+suite("EventSource", () => {
+  test("one event listener", () => {
     const source = new EventSource();
     let calledCount = 0;
-    const callable = ()=>calledCount++;
+    const callable = () => calledCount++;
 
     source.on(callable);
     source.dispatch();
@@ -13,10 +13,10 @@ suite('EventSource' ,()=> {
     equal(1, calledCount);
   });
 
-  test('same event listener twice', () => {
+  test("same event listener twice", () => {
     const source = new EventSource();
     let calledCount = 0;
-    const callable = ()=>calledCount++;
+    const callable = () => calledCount++;
 
     source.on(callable);
     source.on(callable);
@@ -25,11 +25,11 @@ suite('EventSource' ,()=> {
     equal(2, calledCount);
   });
 
-  test('multiple event listeners', () => {
+  test("multiple event listeners", () => {
     const source = new EventSource();
     let calledCount = 0;
-    const callable1 = ()=>calledCount+=1;
-    const callable2 = ()=>calledCount+=10;
+    const callable1 = () => (calledCount += 1);
+    const callable2 = () => (calledCount += 10);
 
     source.on(callable1);
     source.on(callable2);
@@ -38,37 +38,37 @@ suite('EventSource' ,()=> {
     equal(11, calledCount);
   });
 
-  test('unlisten', () => {
+  test("unlisten", () => {
     const source = new EventSource();
     let calledCount = 0;
-    const callable = ()=>calledCount++;
+    const callable = () => calledCount++;
 
     source.on(callable);
     source.dispatch();
-    source.off(callable) ;
+    source.off(callable);
     source.dispatch();
 
     equal(1, calledCount);
   });
 
-  test('unlisten all', () => {
+  test("unlisten all", () => {
     const source = new EventSource();
     let calledCount = 0;
-    const callable = ()=>calledCount++;
+    const callable = () => calledCount++;
 
     source.on(callable);
     source.on(callable);
     source.dispatch();
-    source.off(callable) ;
+    source.off(callable);
     source.dispatch();
 
     equal(2, calledCount);
   });
 
-  test('unlisten from unlistener', () => {
+  test("unlisten from unlistener", () => {
     const source = new EventSource();
     let calledCount = 0;
-    const callable = ()=>calledCount++;
+    const callable = () => calledCount++;
 
     const off = source.on(callable);
     source.dispatch();
@@ -78,10 +78,10 @@ suite('EventSource' ,()=> {
     equal(1, calledCount);
   });
 
-  test('dispatch', () => {
-    const testValues = [1,2,3,4,5];
+  test("dispatch", () => {
+    const testValues = [1, 2, 3, 4, 5];
     const source = new EventSource();
-    const callable = (...args)=>result = args;
+    const callable = (...args) => (result = args);
     let result;
 
     source.on(callable);

@@ -5,17 +5,16 @@ export function equal(target, other, message) {
 }
 
 export function arrayEqual(target, other, message) {
-  if(target instanceof Array && other instanceof Array) {
+  if (target instanceof Array && other instanceof Array) {
     equal(target.length, other.length);
-    for(let i = 0; i < target.length; i++) {
-      if(target[i] !== other[i]) {
+    for (let i = 0; i < target.length; i++) {
+      if (target[i] !== other[i]) {
         throw new Error(message);
       }
     }
   } else {
-    throw new Error('The provided inputs a not of type array');
+    throw new Error("The provided inputs a not of type array");
   }
-
 }
 
 export function notEqual(target, other, message) {
@@ -64,22 +63,22 @@ let currentSuite = newContext();
 
 function newContext() {
   return {
-    passed:[],
-    failed:[]
-  }
+    passed: [],
+    failed: []
+  };
 }
 
 export function test(name, closure) {
   try {
     const promise = closure();
 
-    if(promise && promise.then) {
+    if (promise && promise.then) {
       promise.then(passed);
     } else {
       passed();
     }
 
-    if(promise && promise.catch) {
+    if (promise && promise.catch) {
       promise.catch(failed);
     }
   } catch (ex) {
@@ -87,12 +86,12 @@ export function test(name, closure) {
   }
 
   function passed() {
-    currentSuite.passed.push({name, closure});
+    currentSuite.passed.push({ name, closure });
   }
 
   function failed(message) {
     console.error(message);
-    currentSuite.failed.push({name, closure});
+    currentSuite.failed.push({ name, closure });
   }
 }
 
@@ -105,9 +104,11 @@ export function suite(name, closure) {
   const passedCount = currentSuite.passed.length;
   const totalCount = failedCount + passedCount;
 
-  if(currentSuite.failed.length > 0) {
+  if (currentSuite.failed.length > 0) {
     console.log(`Failed: ${name}`, `${passedCount}/${totalCount}`);
-    const failedClosures = currentSuite.failed.map(it=>it.name + ' ' + it.closure.toString());
+    const failedClosures = currentSuite.failed.map(
+      it => it.name + " " + it.closure.toString()
+    );
     console.log(...failedClosures);
   } else {
     console.log(`Passed: ${name}`, `${passedCount}/${totalCount}`);

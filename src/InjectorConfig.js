@@ -4,10 +4,8 @@ import DefaultContext from "./di/DefaultContext";
 
 export default {
   [DefaultContext]: {},
-  [D]: {name: 'configured name'},
+  [D]: { name: "configured name" },
   [C]() {
     return {};
   }
-}
-
-export default {}
+};

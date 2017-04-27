@@ -5,12 +5,12 @@ export default class EventSource {
 
   on(listener) {
     this.listeners.push(listener);
-    return ()=>this.off(listener);
+    return () => this.off(listener);
   }
 
   off(listener) {
     let index;
-    while((index = this.listeners.indexOf(listener)) !== -1){
+    while ((index = this.listeners.indexOf(listener)) !== -1) {
       this.listeners.splice(index, 1);
     }
   }

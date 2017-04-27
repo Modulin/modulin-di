@@ -1,24 +1,24 @@
 import DefaultContext from "./DefaultContext";
 
 export default class ConfigurableInjector {
-
-  constructor({injector, config=null}) {
+  constructor({ injector, config = null }) {
     this.injector = injector;
     this.config = config;
   }
-  
-  setConfig(config){
+
+  setConfig(config) {
     this.config = config;
   }
 
-  register(module, key){
+  register(module, key) {
     return this.injector.register(module, key);
   }
 
   load(key, ...contexts) {
     const defaultContext = this.getDefaultContext();
     const configuredContext = this.getConfiguredContext(key);
-    return this.injector.load(key,
+    return this.injector.load(
+      key,
       defaultContext,
       configuredContext,
       ...contexts

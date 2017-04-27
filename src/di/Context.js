@@ -1,6 +1,5 @@
 export default class Context {
-
-  constructor(values={}) {
+  constructor(values = {}) {
     this.values = values;
     this.isContext = true;
   }
@@ -8,7 +7,7 @@ export default class Context {
   has(key) {
     return !!this.values[key];
   }
-  
+
   get(key) {
     return this.values[key];
   }

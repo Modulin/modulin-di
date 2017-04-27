@@ -1,7 +1,7 @@
-import {register} from "Injector";
+import { register } from "Injector";
 
 class E {
-  constructor({}) { }
+  constructor({}) {}
 }
 
 export default register(E);

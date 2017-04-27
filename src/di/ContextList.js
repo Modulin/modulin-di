@@ -1,6 +1,5 @@
 export default class ContextList {
-
-  constructor(contexts=[]) {
+  constructor(contexts = []) {
     this.contexts = contexts;
   }
 
@@ -9,23 +8,23 @@ export default class ContextList {
   }
 
   getContext(key) {
-    for(let i = 0; i < this.contexts.length; i++) {
+    for (let i = 0; i < this.contexts.length; i++) {
       const context = this.contexts[i];
 
       const hasInstance = context.has(key, this);
-      if(hasInstance) {
+      if (hasInstance) {
         return context;
       }
     }
   }
 
   getModule(key) {
-    for(let i = 0; i < this.contexts.length; i++) {
+    for (let i = 0; i < this.contexts.length; i++) {
       const context = this.contexts[i];
 
       const instance = context.get(key, this);
-      if(instance) {
-        return {instance, context, key};
+      if (instance) {
+        return { instance, context, key };
       }
     }
     return {};
