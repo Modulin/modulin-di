@@ -4,6 +4,7 @@
   "description": "A light weight dependency injector",
   "main": "dist/modulin-di.min.js",
   "module": "dist/modulin-di.module.js",
+  "jsnext:main": "dist/modulin-di.module.js",
   "repository": "https://github.com/RikardLegge/modulin-di.git",
   "author": "Rikard Legge <rikard@legge.com>",
   "license": "MIT",
