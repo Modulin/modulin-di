@@ -1,7 +1,5 @@
-const {
-  DefaultContext,
-} = modulinDi;
+const { DefaultContext } = modulinDi;
 
 export default {
-  [DefaultContext]: {},
+  [DefaultContext]: {}
 };

@@ -15,7 +15,7 @@
     "uglify-js": "^2.7.5"
   },
   "scripts": {
-    "format": "prettier --write '@(src|tests)/**/*.js'",
+    "format": "prettier --write '@(src|tests|demo)/**/*.js'",
     "build": "rollup -c"
   },
   "dependencies": {
