@@ -1,6 +1,6 @@
 {
   "name": "modulin-di",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A light weight dependency injector",
   "main": "dist/modulin-di.min.js",
   "module": "dist/modulin-di.module.js",
