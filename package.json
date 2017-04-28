@@ -1,8 +1,9 @@
 {
   "name": "modulin-di",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A light weight dependency injector",
-  "main": "main.html",
+  "main": "dist/modulin-di.min.js",
+  "module": "dist/modulin-di.module.js",
   "repository": "https://github.com/RikardLegge/modulin-di.git",
   "author": "Rikard Legge <rikard@legge.com>",
   "license": "MIT",
@@ -16,7 +17,7 @@
   },
   "scripts": {
     "format": "prettier --write '@(src|tests|demo)/**/*.js'",
-    "build": "rollup -c"
+    "build": "rollup -c && rollup -c rollup.module.config.js"
   },
   "dependencies": {
     "modulin-fetch": "^1.0.1"
