@@ -1,4 +1,4 @@
-import { isTrue, suite, test, equal, arrayEqual } from "assert";
+import { isTrue, suite, test, equal, arrayEqual } from "../assert";
 
 import Context from "di/Context";
 import Registry from "di/Registry";

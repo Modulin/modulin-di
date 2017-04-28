@@ -1,6 +1,6 @@
-import { main } from "setup";
+import { main, root } from "setup";
 
-const load = modulin.createLoader("src/");
+const load = modulinFetch.createLoader(root);
 load(["Injector", "InjectorConfig"], function(...args) {
   boot(...args);
   loadTests();

@@ -1,4 +1,4 @@
-import { suite, test, equal, arrayEqual } from "assert";
+import { suite, test, equal, arrayEqual } from "../assert";
 import EventSource from "di/EventSource";
 
 suite("EventSource", () => {

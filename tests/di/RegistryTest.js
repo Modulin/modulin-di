@@ -1,4 +1,4 @@
-import { suite, test, equal, notEqual } from "assert";
+import { suite, test, equal, notEqual } from "../assert";
 import Registry from "di/Registry";
 
 suite("Registry", () => {

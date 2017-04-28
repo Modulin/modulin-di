@@ -1,10 +1,10 @@
-import { suite, test, equal, notEqual } from "assert";
+import { suite, test, equal, notEqual } from "./assert";
 import { load } from "Injector";
 import Context from "di/Context";
 
-import A from "example/A";
-import D from "example/D";
-import E from "example/E";
+import A from "../demo/example/A";
+import D from "../demo/example/D";
+import E from "../demo/example/E";
 
 suite("Injector integration", () => {
   test("base context", () => {

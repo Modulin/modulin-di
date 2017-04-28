@@ -1,4 +1,4 @@
-import { suite, test, equal, isTrue } from "assert";
+import { suite, test, equal, isTrue } from "../assert";
 import ModuleConstructor from "di/ModuleConstructor";
 
 suite("ModuleConstructor", () => {

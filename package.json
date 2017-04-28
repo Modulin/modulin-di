@@ -7,10 +7,16 @@
   "author": "Rikard Legge <rikard@legge.com>",
   "license": "MIT",
   "devDependencies": {
-    "prettier": "^1.2.2"
+    "prettier": "^1.2.2",
+    "babel-preset-es2015-rollup": "^3.0.0",
+    "rollup": "^0.41.3",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-uglify": "^1.0.1",
+    "uglify-js": "^2.7.5"
   },
   "scripts": {
-    "format": "prettier --write '@(src|tests)/**/*.js'"
+    "format": "prettier --write '@(src|tests)/**/*.js'",
+    "build": "rollup -c"
   },
   "dependencies": {
     "modulin-fetch": "^1.0.1"

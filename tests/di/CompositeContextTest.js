@@ -1,4 +1,4 @@
-import { suite, test, equal, isUndefined, isFalse, isTrue } from "assert";
+import { suite, test, equal, isUndefined, isFalse, isTrue } from "../assert";
 
 import CompositeContext from "di/CompositeContext";
 import Context from "di/Context";

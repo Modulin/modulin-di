@@ -1,4 +1,4 @@
-import { suite, test, equal, isUndefined, isTrue } from "assert";
+import { suite, test, equal, isUndefined, isTrue } from "../assert";
 
 import ContextList from "di/ContextList";
 import Context from "di/Context";

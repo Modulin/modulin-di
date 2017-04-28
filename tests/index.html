@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/modulin-fetch/dist/modulin-fetch.amd.min.js"></script>
+    <script>
+      const root = '../src/';
+      const tests = [
+        'di/CompositeContextTest',
+        'di/ContextListTest',
+        'di/ContextTest',
+        'di/EventSourceTest',
+        'di/ModuleConstructorTest',
+        'di/RegistryTest',
+        'di/InjectorTest',
+        'InjectorIntegrationTest'
+      ];
+
+      const load = modulinFetch.createLoader(root);
+      const main = tests.map(path=>`../tests/${path}`);
+      load('setup', [], {
+        root,
+        main
+      });
+      load(['../tests/boot']);
+    </script>
+</head>
+</html>
