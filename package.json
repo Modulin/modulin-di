@@ -11,5 +11,8 @@
   },
   "scripts": {
     "format": "prettier --write '@(src|tests)/**/*.js'"
+  },
+  "dependencies": {
+    "modulin-fetch": "^1.0.1"
   }
 }
