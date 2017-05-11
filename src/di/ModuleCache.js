@@ -1,4 +1,5 @@
 import { debug } from "./Log";
+import { creationScopes } from "./CreationScopeCache";
 
 export default class ModuleCache {
   constructor() {
@@ -29,8 +30,8 @@ export default class ModuleCache {
     const instances = this.values;
     const instancesByContext = instances[key];
     if (instancesByContext) {
-      return instancesByContext.find(
-        ({ __creationScope: { usedContexts } }) => {
+      return instancesByContext.find(instance => {
+          const usedContexts = creationScopes.get(instance).usedContexts;
           return this.canUseScope(usedContexts, availableContexts);
         }
       );

@@ -1,3 +1,5 @@
+import { creationScopes } from "./CreationScopeCache";
+
 export default class ProxyArguments {
   constructor() {}
 
@@ -16,7 +18,7 @@ export default class ProxyArguments {
       throw new Error(`Not found`);
     }
 
-    const childScope = instance.__creationScope;
+    const childScope = creationScopes.get(instance);
     if (childScope) {
       const isSameContext =
         childScope.availableContexts === scope.availableContexts;

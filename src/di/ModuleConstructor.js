@@ -1,4 +1,5 @@
 import { debug } from "./Log";
+import { creationScopes } from "./CreationScopeCache";
 
 export default class ModuleConstructor {
   constructor({ registry, args, cache }) {
@@ -19,7 +20,7 @@ export default class ModuleConstructor {
     const Module = this.registry.get(key);
     if (Module) {
       const module = new Module(this.args.get(scope));
-      Object.defineProperty(module, "__creationScope", { get: () => scope });
+      creationScopes.add(module, scope);
 
       debug(`Created new instance of`, key.toString());
       this.cache.add(key, module);
