@@ -1,7 +1,7 @@
 const { Log: { preferences, LOGLEVEL } } = modulinDi;
 preferences.logLevel = LOGLEVEL.debug;
 
-const load = modulinFetch.createLoader("demo/");
+const load = modulinFetch.createLoader("./");
 load(
   ["Injector", "InjectorConfig"],
   (
