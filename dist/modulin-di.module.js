@@ -271,6 +271,24 @@ var EventSource = function () {
   return EventSource;
 }();
 
+var Module = function Module(cls) {
+  classCallCheck(this, Module);
+
+  this.cls = cls;
+  this.instance = null;
+};
+
+function module$1(cls) {
+  return new Module(cls);
+}
+
+
+
+var Configuration = Object.freeze({
+	Module: Module,
+	module: module$1
+});
+
 var Injector = function () {
   function Injector(_ref) {
     var registry = _ref.registry,
@@ -296,8 +314,8 @@ var Injector = function () {
     }
   }, {
     key: "register",
-    value: function register(module, key) {
-      return this.registry.register(module, key);
+    value: function register(module$$1, key) {
+      return this.registry.register(module$$1, key);
     }
   }, {
     key: "load",
@@ -307,7 +325,9 @@ var Injector = function () {
       }
 
       var availableContexts = this.getAvailableContexts(contexts);
-      return this.cache.get(key, availableContexts) || this.construct.get(key, availableContexts);
+      var instance = this.cache.get(key, availableContexts) || this.construct.get(key, availableContexts);
+
+      return instance;
     }
   }]);
   return Injector;
@@ -367,6 +387,34 @@ var Log = Object.freeze({
 	preferences: preferences
 });
 
+var CreationScopeCache = function () {
+  function CreationScopeCache() {
+    classCallCheck(this, CreationScopeCache);
+
+    this.scopes = new WeakMap();
+  }
+
+  createClass(CreationScopeCache, [{
+    key: "clear",
+    value: function clear() {
+      this.scopes = new WeakMap();
+    }
+  }, {
+    key: "add",
+    value: function add(key, scope) {
+      this.scopes.set(key, scope);
+    }
+  }, {
+    key: "get",
+    value: function get$$1(key) {
+      return this.scopes.get(key);
+    }
+  }]);
+  return CreationScopeCache;
+}();
+
+var creationScopes = new CreationScopeCache();
+
 var ModuleCache = function () {
   function ModuleCache() {
     classCallCheck(this, ModuleCache);
@@ -405,9 +453,8 @@ var ModuleCache = function () {
       var instances = this.values;
       var instancesByContext = instances[key];
       if (instancesByContext) {
-        return instancesByContext.find(function (_ref) {
-          var usedContexts = _ref.__creationScope.usedContexts;
-
+        return instancesByContext.find(function (instance) {
+          var usedContexts = creationScopes.get(instance).usedContexts;
           return _this.canUseScope(usedContexts, availableContexts);
         });
       }
@@ -415,9 +462,9 @@ var ModuleCache = function () {
   }, {
     key: "canUseScope",
     value: function canUseScope(usedContexts, availableContexts) {
-      var hasSameContexts = usedContexts.every(function (_ref2) {
-        var context = _ref2.context,
-            key = _ref2.key;
+      var hasSameContexts = usedContexts.every(function (_ref) {
+        var context = _ref.context,
+            key = _ref.key;
 
         var derivedContext = availableContexts.getContext(key);
         return context === derivedContext;
@@ -455,9 +502,7 @@ var ModuleConstructor = function () {
       var Module = this.registry.get(key);
       if (Module) {
         var module = new Module(this.args.get(scope));
-        Object.defineProperty(module, "__creationScope", { get: function get$$1() {
-            return scope;
-          } });
+        creationScopes.add(module, scope);
 
         debug("Created new instance of", key.toString());
         this.cache.add(key, module);
@@ -495,7 +540,7 @@ var ProxyArguments = function () {
         throw new Error("Not found");
       }
 
-      var childScope = instance.__creationScope;
+      var childScope = creationScopes.get(instance);
       if (childScope) {
         var isSameContext = childScope.availableContexts === scope.availableContexts;
         if (isSameContext) {
@@ -537,4 +582,4 @@ var Registry = function () {
   return Registry;
 }();
 
-export { CompositeContext, ConfigurableInjector, Context, ContextList, DefaultContext, EventSource, Injector, Log, ModuleCache, ModuleConstructor, ProxyArguments, Registry };
+export { CompositeContext, ConfigurableInjector, Context, ContextList, DefaultContext, EventSource, Injector, Log, Configuration, ModuleCache, ModuleConstructor, ProxyArguments, Registry };

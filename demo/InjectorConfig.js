@@ -1,5 +1,9 @@
-const { DefaultContext } = modulinDi;
+const { DefaultContext, Configuration } = modulinDi;
+import E from "./example/E";
+import F from "./example/F";
 
 export default {
-  [DefaultContext]: {}
+  [DefaultContext]: {
+    [E]: Configuration.module(F)
+  }
 };
